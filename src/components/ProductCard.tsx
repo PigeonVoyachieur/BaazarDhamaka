@@ -23,9 +23,6 @@ export function ProductCard({ p }: { p: Product }) {
   return (
     <div className="product-card-decor group relative">
       <div className="rounded-xl border-2 border-foreground bg-card p-4 shadow-[6px_6px_0_0_var(--ashoka)] transition-transform hover:-translate-y-1 hover:-rotate-1">
-        {p.badge && (
-          <div className="dhamaka-badge absolute -top-3 right-3 text-xs z-10">{p.badge}</div>
-        )}
         <Link
           to={isPreview ? "/" : "/produit/$id"}
           params={isPreview ? undefined : { id: p.id }}
@@ -49,6 +46,9 @@ export function ProductCard({ p }: { p: Product }) {
               </span>
             )}
           </div>
+          {p.badge && (
+            <div className="dhamaka-badge inline-block mb-2 text-xs">{p.badge}</div>
+          )}
           <h3 className="font-display text-sm leading-tight text-foreground line-clamp-2 min-h-[36px] group-hover:text-bollywood transition-colors">
             {p.name}
           </h3>
