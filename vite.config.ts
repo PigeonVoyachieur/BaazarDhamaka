@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import { fileURLToPath } from "node:url";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { nitro } from "nitro/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -15,7 +16,9 @@ export default defineConfig({
   },
   plugins: [
     // Le plugin Start DOIT être placé avant le plugin React.
+    // Nitro est requis pour déployer sur Vercel (SSR + routes).
     tanstackStart(),
+    nitro(),
     viteReact(),
     tailwindcss(),
   ],

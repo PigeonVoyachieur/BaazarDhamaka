@@ -1,6 +1,8 @@
 node_modules
 dist
 dist-ssr
+.output
+.tanstack
 *.local
 .env
 .env.local
