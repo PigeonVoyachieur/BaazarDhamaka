@@ -2,6 +2,20 @@ export function SiteFooter() {
   return (
     <footer className="mt-20 border-t-2 border-foreground bg-ashoka text-cream">
       <div className="rangoli-border" />
+
+      {/* Gros « Made in India » */}
+      <div className="border-b border-cream/20 px-4 py-10 text-center">
+        <div className="font-display text-4xl leading-none sm:text-6xl md:text-8xl">
+          <span className="text-saffron">MADE</span>{" "}
+          <span className="text-cream">IN</span>{" "}
+          <span className="text-india-green">INDIA</span>{" "}
+          <span className="align-middle text-3xl sm:text-5xl md:text-7xl">🇮🇳</span>
+        </div>
+        <p className="mt-3 text-xs italic opacity-70 sm:text-sm">
+          (et ailleurs, mais surtout dans nos cœurs) — Fièrement contrefait depuis 2009.
+        </p>
+      </div>
+
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 md:grid-cols-4">
         <div>
           <div className="font-display text-2xl text-saffron">Bazaar Dhamaka</div>

@@ -9,5 +9,13 @@ service cloud.firestore {
       allow read: if true;
       allow write: if true;
     }
+
+    // Commandes passées depuis la page panier.
+    // Création ouverte pour permettre la commande sans authentification.
+    // ⚠️ À restreindre en production (auth client, validation des montants, etc.).
+    match /orders/{order} {
+      allow read: if true;
+      allow create: if true;
+    }
   }
 }

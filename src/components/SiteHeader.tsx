@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { MarqueeBar } from "./MarqueeBar";
 import { PromoBanner } from "./PromoBanner";
+import { useCart } from "@/lib/cart";
 
 function ChakraLogo() {
   return (
@@ -25,18 +26,20 @@ const LINKS = [
   { to: "/technologie", label: "TECHNOLOGIE" },
   { to: "/jeux-video", label: "JEUX VIDÉO" },
   { to: "/vetement", label: "VÊTEMENTS" },
+  { to: "/nourriture", label: "NOURRITURE" },
   { to: "/admin", label: "➕ AJOUTER" },
 ] as const;
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { count } = useCart();
 
   return (
     <header className="sticky top-0 z-40 border-b-2 border-foreground bg-cream/95 backdrop-blur">
       <MarqueeBar />
       <PromoBanner />
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3">
-        <Link to="/" className="flex items-center gap-2 group" onClick={() => setOpen(false)}>
+        <Link to="/" className="flex shrink-0 items-center gap-2 group" onClick={() => setOpen(false)}>
           <ChakraLogo />
           <div className="leading-none">
             <div className="font-display text-xl sm:text-2xl text-bollywood">Bazaar</div>
@@ -45,13 +48,13 @@ export function SiteHeader() {
         </Link>
 
         {/* Navigation desktop */}
-        <nav className="hidden md:flex items-center gap-1 font-display text-sm">
+        <nav className="hidden lg:flex items-center gap-1 font-display text-xs xl:text-sm">
           {LINKS.map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className="px-3 py-1.5 rounded-md hover:bg-saffron/40 transition"
-              activeProps={{ className: "px-3 py-1.5 rounded-md bg-saffron text-foreground" }}
+              className="whitespace-nowrap px-2.5 py-1.5 rounded-md hover:bg-saffron/40 transition"
+              activeProps={{ className: "whitespace-nowrap px-2.5 py-1.5 rounded-md bg-saffron text-foreground" }}
               activeOptions={l.exact ? { exact: true } : undefined}
             >
               {l.label}
@@ -59,23 +62,30 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <div className="hidden lg:flex items-center rounded-md border-2 border-foreground bg-card px-3 py-1.5 text-sm">
+        <div className="flex shrink-0 items-center gap-2">
+          <div className="hidden xl:flex items-center rounded-md border-2 border-foreground bg-card px-3 py-1.5 text-sm">
             <span className="mr-2">🔍</span>
             <input
               placeholder="Search kya chahiye?"
-              className="bg-transparent outline-none w-36 placeholder:text-muted-foreground"
+              className="bg-transparent outline-none w-28 xl:w-36 placeholder:text-muted-foreground"
             />
           </div>
-          <button className="peep-btn relative rounded-md border-2 border-foreground bg-bollywood px-3 py-1.5 font-display text-sm text-white">
+          <Link
+            to="/panier"
+            className="peep-btn relative shrink-0 rounded-md border-2 border-foreground bg-bollywood px-3 py-1.5 font-display text-sm text-white"
+          >
             <span className="hidden sm:inline">🛒 PANIER</span>
             <span className="sm:hidden">🛒</span>
-            <span className="absolute -top-2 -right-2 rounded-full bg-india-green px-1.5 text-[10px] text-white border border-foreground blink">99+</span>
-          </button>
+            {count > 0 && (
+              <span className="absolute -top-2 -right-2 rounded-full bg-india-green px-1.5 text-[10px] text-white border border-foreground blink">
+                {count > 99 ? "99+" : count}
+              </span>
+            )}
+          </Link>
 
           {/* Bouton menu mobile */}
           <button
-            className="md:hidden rounded-md border-2 border-foreground bg-card px-3 py-1.5 font-display text-sm"
+            className="lg:hidden shrink-0 rounded-md border-2 border-foreground bg-card px-3 py-1.5 font-display text-sm"
             aria-label="Menu"
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -87,7 +97,7 @@ export function SiteHeader() {
 
       {/* Menu déroulant mobile */}
       {open && (
-        <nav className="md:hidden border-t-2 border-foreground bg-cream px-4 py-2 font-display text-sm">
+        <nav className="lg:hidden border-t-2 border-foreground bg-cream px-4 py-2 font-display text-sm">
           {LINKS.map((l) => (
             <Link
               key={l.to}

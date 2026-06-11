@@ -1,9 +1,12 @@
 import {
   collection,
   getDocs,
+  getDoc,
+  doc,
   query,
   where,
   addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
@@ -11,6 +14,7 @@ export const CATEGORIES = [
   { slug: "technologie", label: "Technologie" },
   { slug: "jeux-video", label: "Jeux Vidéo" },
   { slug: "vetement", label: "Vêtements" },
+  { slug: "nourriture", label: "Nourriture" },
 ] as const;
 
 export type CategorySlug = (typeof CATEGORIES)[number]["slug"];
@@ -67,6 +71,18 @@ export async function fetchProducts(): Promise<Product[]> {
   }
 }
 
+/** Récupère un seul produit par son identifiant Firestore. */
+export async function fetchProductById(id: string): Promise<Product | null> {
+  try {
+    const snap = await getDoc(doc(db, COLLECTION, id));
+    if (!snap.exists()) return null;
+    return mapDoc(snap);
+  } catch (err) {
+    console.error(`[products] fetchProductById(${id}) a échoué :`, err);
+    return null;
+  }
+}
+
 /** Récupère les produits d'une catégorie donnée. */
 export async function fetchByCategory(cat: CategorySlug): Promise<Product[]> {
   try {
@@ -104,5 +120,44 @@ export async function addProduct(input: NewProduct): Promise<string> {
   if (input.badge?.trim()) payload.badge = input.badge.trim();
 
   const ref = await addDoc(collection(db, COLLECTION), payload);
+  return ref.id;
+}
+
+/** Ligne d'une commande (article + quantité). */
+export type OrderLine = {
+  productId: string;
+  name: string;
+  price: number;
+  qty: number;
+};
+
+/** Informations client saisies au moment de commander. */
+export type OrderCustomer = {
+  name: string;
+  email: string;
+  address: string;
+};
+
+/**
+ * Enregistre une commande dans Firestore (collection `orders`) et renvoie son id.
+ */
+export async function createOrder(
+  customer: OrderCustomer,
+  lines: OrderLine[]
+): Promise<string> {
+  const total = lines.reduce((s, l) => s + l.price * l.qty, 0);
+  const payload = {
+    customer: {
+      name: customer.name.trim(),
+      email: customer.email.trim(),
+      address: customer.address.trim(),
+    },
+    lines,
+    total,
+    itemCount: lines.reduce((n, l) => n + l.qty, 0),
+    status: "pending" as const,
+    createdAt: serverTimestamp(),
+  };
+  const ref = await addDoc(collection(db, "orders"), payload);
   return ref.id;
 }

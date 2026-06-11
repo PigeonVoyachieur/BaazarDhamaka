@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { FakeUrgencyPopup } from "@/components/FakeUrgencyPopup";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductCarousel } from "@/components/ProductCarousel";
 import { fetchProducts } from "@/data/products";
 
 export const Route = createFileRoute("/")({
@@ -16,7 +17,11 @@ export const Route = createFileRoute("/")({
   // Les produits viennent de Firestore (plus de tableau en dur).
   loader: async () => {
     const products = await fetchProducts();
-    return { bestSellers: products.slice(0, 8) };
+    const bestSellers = products.slice(0, 8);
+    // Le carousel met en avant d'AUTRES articles que les best-sellers.
+    const bestIds = new Set(bestSellers.map((p) => p.id));
+    const featured = products.filter((p) => !bestIds.has(p.id)).slice(0, 12);
+    return { bestSellers, featured };
   },
   component: Index,
 });
@@ -25,6 +30,7 @@ const CATEGORIES = [
   { to: "/technologie", title: "Technologie", emoji: "📱", tag: "Pointe de 2009", bg: "bg-india-green" },
   { to: "/jeux-video", title: "Jeux Vidéo", emoji: "🎮", tag: "Next-gen précédente", bg: "bg-saffron" },
   { to: "/vetement", title: "Vêtements", emoji: "👗", tag: "Bollywood approved", bg: "bg-bollywood" },
+  { to: "/nourriture", title: "Nourriture", emoji: "🍛", tag: "Chaîne du froid rompue", bg: "bg-india-green" },
 ] as const;
 
 const TESTIMONIALS = [
@@ -35,7 +41,7 @@ const TESTIMONIALS = [
 ];
 
 function Index() {
-  const { bestSellers } = Route.useLoaderData();
+  const { bestSellers, featured } = Route.useLoaderData();
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -99,7 +105,7 @@ function Index() {
         <h2 className="font-display text-3xl md:text-5xl text-center mb-10 text-ashoka">
           NOS <span className="text-bollywood">CATÉGORIES</span> DHAMAKA
         </h2>
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {CATEGORIES.map((c) => (
             <Link
               key={c.to}
@@ -114,6 +120,23 @@ function Index() {
           ))}
         </div>
       </section>
+
+      {featured.length > 0 && (
+        <section className="mx-auto max-w-7xl px-4 py-12">
+          <div className="flex items-end justify-between mb-2">
+            <h2 className="font-display text-3xl md:text-5xl text-ashoka">
+              EN CE <span className="text-bollywood">MOMENT</span> 🎡
+            </h2>
+            <div className="hidden md:block text-sm text-muted-foreground italic">
+              Faites défiler → (ça bouge tout seul aussi)
+            </div>
+          </div>
+          <p className="mb-4 text-sm text-muted-foreground italic">
+            Une sélection qui tourne en boucle, comme nos promesses de livraison.
+          </p>
+          <ProductCarousel items={featured} />
+        </section>
+      )}
 
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="flex items-end justify-between mb-8">

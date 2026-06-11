@@ -186,6 +186,15 @@
   margin-right: 4px;
 }
 
+/* === CAROUSEL === */
+.carousel-track {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.carousel-track::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
 /* === Hover peep === */
 .peep-btn { position: relative; }
 .peep-btn::after {

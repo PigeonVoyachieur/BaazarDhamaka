@@ -11,9 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VetementRouteImport } from './routes/vetement'
 import { Route as TechnologieRouteImport } from './routes/technologie'
+import { Route as PanierRouteImport } from './routes/panier'
+import { Route as NourritureRouteImport } from './routes/nourriture'
 import { Route as JeuxVideoRouteImport } from './routes/jeux-video'
+import { Route as CommandeRouteImport } from './routes/commande'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProduitIdRouteImport } from './routes/produit.$id'
 
 const VetementRoute = VetementRouteImport.update({
   id: '/vetement',
@@ -25,9 +29,24 @@ const TechnologieRoute = TechnologieRouteImport.update({
   path: '/technologie',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PanierRoute = PanierRouteImport.update({
+  id: '/panier',
+  path: '/panier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NourritureRoute = NourritureRouteImport.update({
+  id: '/nourriture',
+  path: '/nourriture',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JeuxVideoRoute = JeuxVideoRouteImport.update({
   id: '/jeux-video',
   path: '/jeux-video',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommandeRoute = CommandeRouteImport.update({
+  id: '/commande',
+  path: '/commande',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -40,43 +59,92 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProduitIdRoute = ProduitIdRouteImport.update({
+  id: '/produit/$id',
+  path: '/produit/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/commande': typeof CommandeRoute
   '/jeux-video': typeof JeuxVideoRoute
+  '/nourriture': typeof NourritureRoute
+  '/panier': typeof PanierRoute
   '/technologie': typeof TechnologieRoute
   '/vetement': typeof VetementRoute
+  '/produit/$id': typeof ProduitIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/commande': typeof CommandeRoute
   '/jeux-video': typeof JeuxVideoRoute
+  '/nourriture': typeof NourritureRoute
+  '/panier': typeof PanierRoute
   '/technologie': typeof TechnologieRoute
   '/vetement': typeof VetementRoute
+  '/produit/$id': typeof ProduitIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
+  '/commande': typeof CommandeRoute
   '/jeux-video': typeof JeuxVideoRoute
+  '/nourriture': typeof NourritureRoute
+  '/panier': typeof PanierRoute
   '/technologie': typeof TechnologieRoute
   '/vetement': typeof VetementRoute
+  '/produit/$id': typeof ProduitIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/jeux-video' | '/technologie' | '/vetement'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/commande'
+    | '/jeux-video'
+    | '/nourriture'
+    | '/panier'
+    | '/technologie'
+    | '/vetement'
+    | '/produit/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/jeux-video' | '/technologie' | '/vetement'
-  id: '__root__' | '/' | '/admin' | '/jeux-video' | '/technologie' | '/vetement'
+  to:
+    | '/'
+    | '/admin'
+    | '/commande'
+    | '/jeux-video'
+    | '/nourriture'
+    | '/panier'
+    | '/technologie'
+    | '/vetement'
+    | '/produit/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/commande'
+    | '/jeux-video'
+    | '/nourriture'
+    | '/panier'
+    | '/technologie'
+    | '/vetement'
+    | '/produit/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
+  CommandeRoute: typeof CommandeRoute
   JeuxVideoRoute: typeof JeuxVideoRoute
+  NourritureRoute: typeof NourritureRoute
+  PanierRoute: typeof PanierRoute
   TechnologieRoute: typeof TechnologieRoute
   VetementRoute: typeof VetementRoute
+  ProduitIdRoute: typeof ProduitIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -95,11 +163,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TechnologieRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/panier': {
+      id: '/panier'
+      path: '/panier'
+      fullPath: '/panier'
+      preLoaderRoute: typeof PanierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nourriture': {
+      id: '/nourriture'
+      path: '/nourriture'
+      fullPath: '/nourriture'
+      preLoaderRoute: typeof NourritureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/jeux-video': {
       id: '/jeux-video'
       path: '/jeux-video'
       fullPath: '/jeux-video'
       preLoaderRoute: typeof JeuxVideoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/commande': {
+      id: '/commande'
+      path: '/commande'
+      fullPath: '/commande'
+      preLoaderRoute: typeof CommandeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -116,15 +205,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/produit/$id': {
+      id: '/produit/$id'
+      path: '/produit/$id'
+      fullPath: '/produit/$id'
+      preLoaderRoute: typeof ProduitIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
+  CommandeRoute: CommandeRoute,
   JeuxVideoRoute: JeuxVideoRoute,
+  NourritureRoute: NourritureRoute,
+  PanierRoute: PanierRoute,
   TechnologieRoute: TechnologieRoute,
   VetementRoute: VetementRoute,
+  ProduitIdRoute: ProduitIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
