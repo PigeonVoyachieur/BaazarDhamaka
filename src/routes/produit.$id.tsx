@@ -39,7 +39,7 @@ function ProductNotFound() {
         <div className="text-6xl mb-4">{"\u{1FAE5}"}</div>
         <h1 className="font-display text-4xl text-ashoka">ARTICLE INTROUVABLE</h1>
         <p className="mt-3 text-muted-foreground italic">
-          Cet article a peut-\u00eatre \u00e9t\u00e9 vendu 12 millions de fois (ou n'a jamais exist\u00e9).
+          {"Cet article a peut-\u00eatre \u00e9t\u00e9 vendu 12 millions de fois (ou n'a jamais exist\u00e9)."}
         </p>
         <Link
           to="/"
@@ -127,7 +127,7 @@ function ProductPage() {
             <div className="mt-3 flex items-center gap-2 text-sm">
               <span className="text-saffron text-lg">{STAR.repeat(Math.round(rating))}</span>
               <span className="text-muted-foreground">
-                {rating.toFixed(1)} / 5 {EM_DASH} {reviews.toLocaleString("fr")} avis (tous v\u00e9rifi\u00e9s par notre cousin)
+                {`${rating.toFixed(1)} / 5 ${EM_DASH} ${reviews.toLocaleString("fr")} avis (tous v\u00e9rifi\u00e9s par notre cousin)`}
               </span>
             </div>
 
@@ -202,7 +202,7 @@ function ProductPage() {
             </div>
 
             <p className="mt-4 text-[11px] text-muted-foreground">
-              *Les retours sont interdits car nous y croyons tr\u00e8s fort.
+              {"*Les retours sont interdits car nous y croyons tr\u00e8s fort."}
             </p>
           </div>
         </div>
@@ -213,7 +213,7 @@ function ProductPage() {
               AVIS <span className="text-bollywood">CLIENTS</span>
             </h2>
             <div className="text-sm text-muted-foreground italic">
-              {reviews.toLocaleString("fr")} avis {EM_DASH} tous v\u00e9rifi\u00e9s par notre cousin
+              {`${reviews.toLocaleString("fr")} avis ${EM_DASH} tous v\u00e9rifi\u00e9s par notre cousin`}
             </div>
           </div>
 
